@@ -1,0 +1,106 @@
+((λ (dividesP)
+    ((λ (prime_loop)
+       ((λ (isPrimeP)
+          ((λ (loop) ((loop loop) 10000))
+           (λ (loop)
+             (λ (n)
+               (ifleq0
+                (+ n (* -1 2))
+                (ifleq0
+                 (+ 2 (* -1 n))
+                 2
+                 (ifleq0
+                  (+ ((isPrimeP isPrimeP) n) (* -1 1))
+                  (ifleq0
+                   (+ 1 (* -1 ((isPrimeP isPrimeP) n)))
+                   ((λ (x) ((loop loop) (+ n -1)))
+                    (println n))
+                   ((loop loop) (+ n -1)))
+                  ((loop loop) (+ n -1))))
+                (ifleq0
+                 (+ ((isPrimeP isPrimeP) n) (* -1 1))
+                 (ifleq0
+                  (+ 1 (* -1 ((isPrimeP isPrimeP) n)))
+                  ((λ (x) ((loop loop) (+ n -1)))
+                   (println n))
+                  ((loop loop) (+ n -1)))
+                 ((loop loop) (+ n -1))))))))
+        (λ (isPrimeP)
+          (λ (n) (((prime_loop prime_loop) n) (+ n -1))))))
+     (λ (prime_loop)
+       (λ (n)
+         (λ (divisor)
+           (ifleq0
+            (+ n (* -1 1))
+            (ifleq0
+             (+ 1 (* -1 n))
+             1
+             (ifleq0
+              (+ divisor (* -1 1))
+              (ifleq0
+               (+ 1 (* -1 divisor))
+               1
+               (ifleq0
+                (+
+                 (((dividesP dividesP) divisor) n)
+                 (* -1 1))
+                (ifleq0
+                 (+
+                  1
+                  (* -1 (((dividesP dividesP) divisor) n)))
+                 0
+                 (((prime_loop prime_loop) n)
+                  (+ divisor -1)))
+                (((prime_loop prime_loop) n)
+                 (+ divisor -1))))
+              (ifleq0
+               (+ (((dividesP dividesP) divisor) n) (* -1 1))
+               (ifleq0
+                (+
+                 1
+                 (* -1 (((dividesP dividesP) divisor) n)))
+                0
+                (((prime_loop prime_loop) n) (+ divisor -1)))
+               (((prime_loop prime_loop) n)
+                (+ divisor -1)))))
+            (ifleq0
+             (+ divisor (* -1 1))
+             (ifleq0
+              (+ 1 (* -1 divisor))
+              1
+              (ifleq0
+               (+ (((dividesP dividesP) divisor) n) (* -1 1))
+               (ifleq0
+                (+
+                 1
+                 (* -1 (((dividesP dividesP) divisor) n)))
+                0
+                (((prime_loop prime_loop) n) (+ divisor -1)))
+               (((prime_loop prime_loop) n) (+ divisor -1))))
+             (ifleq0
+              (+ (((dividesP dividesP) divisor) n) (* -1 1))
+              (ifleq0
+               (+ 1 (* -1 (((dividesP dividesP) divisor) n)))
+               0
+               (((prime_loop prime_loop) n) (+ divisor -1)))
+              (((prime_loop prime_loop) n)
+               (+ divisor -1))))))))))
+  (λ (dividesP)
+    (λ (divisor)
+      (λ (n)
+        ((λ (loop) ((loop loop) 1))
+         (λ (loop)
+           (λ (m)
+             (ifleq0
+              (+ (* divisor m) (* -1 n))
+              (ifleq0
+               (+ n (* -1 (* divisor m)))
+               1
+               (ifleq0
+                (+ (+ n (* -1 (* divisor m))) (* -1 1))
+                0
+                ((loop loop) (+ m 1))))
+              (ifleq0
+               (+ (+ n (* -1 (* divisor m))) (* -1 1))
+               0
+               ((loop loop) (+ m 1)))))))))))
