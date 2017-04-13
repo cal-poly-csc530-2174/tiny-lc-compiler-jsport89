@@ -1,8 +1,7 @@
 #lang racket
 ; TO DO
 ; - load rackunit from cmd line
-; - Change ifleq0 to (M0 <= 0 ? M1 : M2)
-(require rackunit)
+;(require rackunit)
 (require racket/cmdline)
 
 
@@ -65,11 +64,6 @@ Template
              translated-else]
             [else (cons translated-else '())]))
         (define new-else (cons translated-else '()))
-   #| OLD if else
-        (append `(if (,@new-translated-test <= 0))
-                '(|{|) `(,@new-translated-then) '(|}|)
-                '(else) '(|{|) `(,@new-translated-else) '(|}|))
-   |#
        `(,@new-translated-test <= 0 ? ,@new-translated-then : ,@new-translated-else)
         ] 
        [(list 'println message)
@@ -113,7 +107,7 @@ Template
 ;;;;;;;;;;;;;;;;;;;
 ;; PROGRAM START ;;
 ;;;;;;;;;;;;;;;;;;;
-#|
+
 ;; Get input file and send to top-translate then output to .js file
 (define file_in (command-line #:args (filename_in filename_out) filename_in))
 (define file_out (command-line #:args (filename_in filename_out) filename_out))
@@ -129,14 +123,14 @@ Template
 (printf "\n" )
 ;; Send translated_prog to output file
 (fprintf file_out_port translated_prog)
-|#
+
  
 ;;;;;;;;;;;
 ;; TESTS ;;
 ;;;;;;;;;;;
 
+#|
 ;; Translate Tests
-
 (check-equal? (translate 123) 123)
 (check-equal? (translate 'a) 'a) 
 (check-equal? (translate '(λ (x) do_crap)) '(function (x) |{| return do_crap |}|))
@@ -162,9 +156,9 @@ Template
 (check-equal? (top-translate '(+ 1 2)) "1 + 2")
 (check-equal? (top-translate '(* 1 2)) "1 * 2")
 (check-equal? (top-translate '(+ (+ 1 2) (* 2 3))) "(1 + 2) + (2 * 3)")
-(check-equal? (top-translate '(ifleq0 0 1 2)) "if (0 <= 0) { 1 } else { 2 }")
+(check-equal? (top-translate '(ifleq0 0 1 2)) "0 <= 0 ? 1 : 2")
 (check-equal? (top-translate '(println something)) "console.log (something)")
 (check-equal? (top-translate '(func_app 2)) "((func_app) (2))")
 (check-equal? (top-translate '(func_app (+ 1 2))) "((func_app) (1 + 2))")
 (check-equal? (top-translate '((λ (x) (+ x 3)) 7)) "((function (x) { return (x + 3) }) (7))")
-
+|#
